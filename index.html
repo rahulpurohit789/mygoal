@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mandala Chart - Only 3CR</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f8f9fb;
+            color: #1a1a2e;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 40px 20px 10px;
+        }
+        .header-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 18px;
+            background: #f0edff;
+            border: 1px solid #e0d9ff;
+            border-radius: 100px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #7c3aed;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+        .header-badge .dot {
+            width: 7px; height: 7px;
+            background: #7c3aed;
+            border-radius: 50%;
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.7); }
+        }
+        .header h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 38px;
+            font-weight: 800;
+            color: #111827;
+            letter-spacing: -1.5px;
+            margin-bottom: 6px;
+        }
+        .header p { color: #9ca3af; font-size: 14px; }
+
+        /* Status Bar */
+        .status-bar {
+            max-width: 1000px;
+            margin: 16px auto 24px;
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+        .status-item { text-align: center; }
+        .status-label {
+            font-size: 11px; font-weight: 500; color: #9ca3af;
+            text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px;
+        }
+        .status-value {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 800; font-size: 22px; color: #7c3aed;
+        }
+
+        /* ===== MANDALA GRID - Proper 3x3 block structure ===== */
+        .mandala-container {
+            max-width: 1000px;
+            margin: 0 auto 30px;
+            padding: 0 16px;
+        }
+
+        .mandala-outer {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: 1fr 1fr 1fr;
+            gap: 8px;
+            max-width: 920px;
+            margin: 0 auto;
+        }
+
+        /* Each 3x3 block */
+        .block {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: 1fr 1fr 1fr;
+            gap: 3px;
+            padding: 6px;
+            border-radius: 14px;
+            border: 2px solid;
+            aspect-ratio: 1;
+            transition: all 0.3s ease;
+        }
+
+        .block:hover {
+            transform: scale(1.01);
+        }
+
+        /* Block themes */
+        .block.block-center {
+            background: linear-gradient(135deg, rgba(124,58,237,0.06), rgba(168,85,247,0.06));
+            border-color: rgba(124,58,237,0.2);
+        }
+
+        .block.theme-1 { background: #f9f7ff; border-color: #e0d9ff; }
+        .block.theme-2 { background: #f5f8ff; border-color: #bfdbfe; }
+        .block.theme-3 { background: #f2fcff; border-color: #a5f3fc; }
+        .block.theme-4 { background: #f0fdf6; border-color: #a7f3d0; }
+        .block.theme-5 { background: #fffdf5; border-color: #fde68a; }
+        .block.theme-6 { background: #fff5f5; border-color: #fecaca; }
+        .block.theme-7 { background: #fef5fa; border-color: #fbcfe8; }
+        .block.theme-8 { background: #fff9f5; border-color: #fed7aa; }
+
+        /* Cells inside blocks */
+        .cell {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 4px 3px;
+            border-radius: 8px;
+            font-size: 9px;
+            font-weight: 500;
+            line-height: 1.25;
+            transition: all 0.2s ease;
+            cursor: default;
+            position: relative;
+        }
+
+        .cell:hover {
+            transform: scale(1.08);
+            z-index: 20;
+        }
+
+        /* ---- Main Goal (center of center block) ---- */
+        .cell.main-goal {
+            background: linear-gradient(135deg, #7c3aed, #a855f7, #c084fc);
+            color: #fff;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.35);
+        }
+
+        .cell.main-goal .goal-label {
+            font-size: 7px; font-weight: 600; opacity: 0.85;
+            letter-spacing: 2.5px; text-transform: uppercase; margin-bottom: 1px;
+        }
+
+        /* ---- Center ring cells (sub-goal references in center block) ---- */
+        .cell.center-ring {
+            font-weight: 700;
+            font-size: 8px;
+            line-height: 1.2;
+            border-radius: 7px;
+            border: 1.5px solid;
+        }
+
+        /* Theme colors for center ring */
+        .cell.cr-1 { background: #f5f3ff; border-color: #d8d0ff; color: #7c3aed; }
+        .cell.cr-2 { background: #eff6ff; border-color: #bfdbfe; color: #2563eb; }
+        .cell.cr-3 { background: #ecfeff; border-color: #a5f3fc; color: #0891b2; }
+        .cell.cr-4 { background: #ecfdf5; border-color: #a7f3d0; color: #059669; }
+        .cell.cr-5 { background: #fffbeb; border-color: #fde68a; color: #d97706; }
+        .cell.cr-6 { background: #fef2f2; border-color: #fecaca; color: #dc2626; }
+        .cell.cr-7 { background: #fdf2f8; border-color: #fbcfe8; color: #db2777; }
+        .cell.cr-8 { background: #fff7ed; border-color: #fed7aa; color: #ea580c; }
+
+        .cell.center-ring:hover {
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        /* ---- Sub Goal (center of outer blocks) ---- */
+        .cell.sub-goal {
+            font-weight: 800;
+            font-size: 9px;
+            border-radius: 8px;
+            letter-spacing: -0.2px;
+            line-height: 1.2;
+            border: 2px solid;
+        }
+
+        .cell.sub-goal .sub-number {
+            font-size: 6px; font-weight: 700; opacity: 0.5;
+            letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 1px;
+        }
+        .cell.sub-goal .sub-metric {
+            font-size: 6.5px; font-weight: 500; opacity: 0.65; margin-top: 2px;
+        }
+
+        .cell.sg-1 { background: #ede9fe; border-color: #c4b5fd; color: #6d28d9; }
+        .cell.sg-2 { background: #dbeafe; border-color: #93c5fd; color: #1d4ed8; }
+        .cell.sg-3 { background: #cffafe; border-color: #67e8f9; color: #0e7490; }
+        .cell.sg-4 { background: #d1fae5; border-color: #6ee7b7; color: #047857; }
+        .cell.sg-5 { background: #fef3c7; border-color: #fcd34d; color: #b45309; }
+        .cell.sg-6 { background: #fee2e2; border-color: #fca5a5; color: #b91c1c; }
+        .cell.sg-7 { background: #fce7f3; border-color: #f9a8d4; color: #be185d; }
+        .cell.sg-8 { background: #ffedd5; border-color: #fdba74; color: #c2410c; }
+
+        .cell.sub-goal:hover {
+            box-shadow: 0 3px 14px rgba(0,0,0,0.12);
+        }
+
+        /* ---- Action cells ---- */
+        .cell.action-cell {
+            font-size: 8px;
+            font-weight: 500;
+            border-radius: 6px;
+            border: 1px solid rgba(0,0,0,0.06);
+            background: rgba(255,255,255,0.7);
+            color: #4b5563;
+        }
+
+        .cell.action-cell:hover {
+            background: #fff;
+            border-color: rgba(0,0,0,0.12);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            color: #111827;
+        }
+
+        .cell.action-cell.empty {
+            background: rgba(255,255,255,0.4);
+            border: 1.5px dashed rgba(0,0,0,0.08);
+            color: #d1d5db;
+            font-size: 7px;
+        }
+
+        .cell.action-cell.empty:hover {
+            border-color: rgba(0,0,0,0.15);
+            color: #aaa;
+        }
+
+        /* Legend */
+        .legend {
+            max-width: 920px;
+            margin: 10px auto 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            padding: 0 20px;
+        }
+        .legend-item {
+            display: flex; align-items: center; gap: 7px;
+            padding: 7px 12px;
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 11px; font-weight: 500; color: #4b5563;
+        }
+        .legend-dot { width: 10px; height: 10px; border-radius: 3px; }
+
+        /* Tooltip */
+        .tooltip {
+            display: none;
+            position: fixed;
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-size: 13px;
+            color: #111827;
+            z-index: 1000;
+            pointer-events: none;
+            box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+            max-width: 240px;
+        }
+        .tooltip.visible { display: block; }
+        .tooltip-title { font-weight: 700; margin-bottom: 3px; }
+        .tooltip-metric { font-size: 11px; color: #6b7280; }
+
+        .watermark {
+            text-align: center;
+            padding: 10px 0 32px;
+            font-size: 11px;
+            color: #d1d5db;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .mandala-outer { gap: 5px; }
+            .block { gap: 2px; padding: 4px; border-radius: 10px; }
+            .cell { font-size: 6.5px; padding: 3px 2px; }
+            .cell.main-goal { font-size: 14px; }
+            .cell.sub-goal { font-size: 6.5px; }
+            .cell.sub-goal .sub-number, .cell.sub-goal .sub-metric { display: none; }
+            .cell.center-ring { font-size: 6px; }
+            .header h1 { font-size: 28px; }
+        }
+
+        @media (max-width: 500px) {
+            .mandala-outer { gap: 3px; }
+            .block { gap: 1.5px; padding: 3px; border-radius: 7px; border-width: 1.5px; }
+            .cell { font-size: 5px; padding: 2px 1px; border-radius: 4px; }
+            .cell.main-goal { font-size: 10px; }
+            .cell.sub-goal { font-size: 5px; }
+            .cell.center-ring { font-size: 4.5px; }
+            .cell.action-cell { font-size: 4.5px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="header-badge"><span class="dot"></span> MANDALA GOAL CHART</div>
+        <h1>Road to <em style="font-style:normal;background:linear-gradient(135deg,#7c3aed,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Only</em> 3 Crore</h1>
+        <p style="color:#374151; font-weight:600; font-size:15px; margin-bottom:4px;">Virendrasingh Rajpurohit</p>
+        <p>8 Strategic Pillars &middot; Focused Execution &middot; Clear Metrics</p>
+    </div>
+
+    <div class="status-bar">
+        <div class="status-item">
+            <div class="status-label">Target</div>
+            <div class="status-value">3 CR</div>
+        </div>
+        <div class="status-item">
+            <div class="status-label">Pillars</div>
+            <div class="status-value">8</div>
+        </div>
+        <div class="status-item">
+            <div class="status-label">Actions</div>
+            <div class="status-value">64</div>
+        </div>
+    </div>
+
+    <div class="mandala-container">
+        <div class="mandala-outer" id="mandalaOuter"></div>
+    </div>
+
+    <div class="legend" id="legend"></div>
+    <div class="watermark">Virendrasingh Rajpurohit &middot; Mandala Goal Chart &middot; Built with Focus</div>
+
+    <div class="tooltip" id="tooltip">
+        <div class="tooltip-title" id="tooltipTitle"></div>
+        <div class="tooltip-metric" id="tooltipMetric"></div>
+    </div>
+
+    <script>
+        const subGoals = [
+            { name: "Ek Dukan", metric: "1K Shops | 10K Users", theme: 1, short: "Ek Dukan" },
+            { name: "Thinkr", metric: "200 Students Only", theme: 2, short: "Thinkr" },
+            { name: "Simple Trade", metric: "20K Active Users", theme: 3, short: "Simple Trade" },
+            { name: "WeSee Marketing", metric: "20 Clients Only", theme: 4, short: "WeSee Mktg" },
+            { name: "AI Agent Brokers", metric: "350 Agents Onboarded", theme: 5, short: "AI Agents" },
+            { name: "WeSee Shares", metric: "Equity ownership to stay personally invested in every outcome", theme: 6, short: "WeSee Shares" },
+            { name: "3 Small Business", metric: "Invest in 3 small businesses for recurring money", theme: 7, short: "3 Small Biz" },
+            { name: "1L/month Social Media", metric: "Earn 1 Lakh monthly from social media", theme: 8, short: "1L Social Media" },
+        ];
+
+        const actionItems = {
+            0: [
+                { title: "Website by April", desc: "Complete Ek Dukan website live by end of April" },
+                { title: "200 Shops by June", desc: "Onboard 200 local shops on the platform by June" },
+                { title: "Meta Glasses Content", desc: "Start making Insta content wearing Meta Glasses for engagement" },
+                { title: "Big Retailer Collabs", desc: "Collaborate with Reliance, DMart & 5-6 big retailers" },
+                { title: "B2B Bulk Ordering", desc: "Let small businesses order wholesale from local suppliers" },
+                { title: "Micro-Influencers", desc: "Collaborate with local city influencers for organic reach" },
+                { title: "Payment by April", desc: "Figure out and finalize payment method by end of April" },
+                { title: "Seller Success Team", desc: "Help shop owners with product photos, listings & digital presence" },
+            ],
+            1: [
+                { title: "Partner with Classes", desc: "Partner with existing tuition classes for quick market entry" },
+                { title: "AI Doubt Solver 24/7", desc: "Introduce AI-powered doubt solver as a 24/7 promotion tool" },
+                { title: "Digital Progress Reports", desc: "App/WhatsApp based homework & progress tracking so parents see value daily" },
+                { title: "Free Demo Classes", desc: "Offer 1-week free trial classes to attract first 50 students" },
+                { title: "School Tie-Ups", desc: "Partner with 3-4 schools for after-school tuition programs" },
+                { title: "Gamified Learning", desc: "Points, badges & leaderboards to keep students engaged" },
+                { title: "YouTube/Insta Content", desc: "Teachers post free educational tips to build trust & attract students" },
+                { title: "Parent Referrals", desc: "Existing parents refer new students, get 1 month free" },
+            ],
+            2: [
+                { title: "Simplest UI", desc: "Build the simplest, most intuitive UI for Simple Trade — zero learning curve" },
+                { title: "Website by July", desc: "Develop and launch Simple Trade website by July" },
+                { title: "Refer & Earn", desc: "Referral program — invite friends, earn rewards on their first prediction" },
+                { title: "Daily 1 Question", desc: "One simple prediction per day to build habit (e.g., Will Nifty close green today?)" },
+                { title: "AI Intraday Trading", desc: "AI trades in the stock market — you choose which AI you trust" },
+            ],
+            5: [
+                { title: "Own It Mindset", desc: "Work like this is my own company, full ownership mentality" },
+                { title: "Product-Based Co.", desc: "Move WeSee from service-based to product-based company" },
+                { title: "10x ROI Delivery", desc: "If WeSee pays 1 Rs, deliver 10 Rs profit in return" },
+                { title: "Impactful Decisions", desc: "Make bold, impactful decisions that move the needle" },
+                { title: "Lead Tech Team", desc: "Lead and grow the tech team with strong engineering culture" },
+                { title: "Exceed Expectations", desc: "Always give more than what the client expects" },
+                { title: "Loyalty & Trust", desc: "Be Loyal, Be Honest, Win Trust - non-negotiable values" },
+                { title: "Always Available", desc: "9 to 5? Never. Always there when the company needs you" },
+            ],
+            7: [
+                { title: "10M Views/Month on X", desc: "Hit 10 million monthly views on X consistently" },
+                { title: "YT + Insta + 3 X Accs", desc: "Create YouTube channel, Insta channel and 3 small X accounts" },
+                { title: "2 Content People", desc: "Hire 2 full-time content management people" },
+                { title: "Weekly Tech Video", desc: "Create one video a week about new technology" },
+                { title: "Brand Collabs", desc: "Collaborate with brands and big accounts for reach & revenue" },
+                { title: "Affiliate Monetization", desc: "Promote tech products/tools with affiliate commissions on every post" },
+                { title: "Sponsorship Pipeline", desc: "Build a media kit, pitch to 5 brands/month for sponsored content deals" },
+                { title: "Trend Hijacking", desc: "Jump on breaking tech/market news within 30 mins for viral reach" },
+            ],
+            6: [
+                { title: "Save 5L to Invest", desc: "Save 5 lakh dedicated fund to invest in 3 small business ideas" },
+                { title: "Build Connections", desc: "Find people like me who are short of funding and hungry to grow" },
+                { title: "Invest in New Things", desc: "Stay open to investing in new and unconventional business ideas" },
+                { title: "Look in My Network", desc: "Find people in my circle who are responsible and have pressure to prove something" },
+                { title: "Revenue Share Only", desc: "No equity headaches — simple monthly revenue share for passive income" },
+                { title: "Startup Meetups", desc: "Attend local startup meetups to discover investment-worthy small businesses" },
+            ],
+            3: [
+                { title: "Market Own Products", desc: "Start marketing Ek Dukan, Thinkr, AI Agent under WeSee Marketing first" },
+                { title: "First Client by July", desc: "Land the first external paying client by July" },
+                { title: "Tap Both Networks", desc: "Reach out to clients' network and WeSee's existing network for leads" },
+                { title: "Build in Public", desc: "Record on social media how we build Ek Dukan and other projects from scratch" },
+                { title: "Results-Based Pricing", desc: "First 3 clients pay only if they see results — removes risk, builds trust fast" },
+                { title: "Reach 10 Brands/Day", desc: "Reach out to 10 brands daily across all platforms for new business" },
+                { title: "Niche Down First", desc: "Start with one niche (real estate, edtech, or D2C) — dominate one before expanding" },
+                { title: "Document Everything", desc: "Document the journey of building client projects — attracts inbound leads" },
+            ],
+            4: [
+                { title: "Ship by April End", desc: "Build and finish the AI Agent product by end of April" },
+                { title: "Break the Ice", desc: "Build trust with brokers — we are not gonna steal your data" },
+                { title: "5 Big Brokers/Month", desc: "Reach out to at least 5 big broker companies every month" },
+                { title: "Free 1-Month Trial", desc: "Give brokers a free one month try to experience the value" },
+                { title: "Case Study Pipeline", desc: "Turn every free trial into a success story to pitch the next broker" },
+                { title: "Industry Events", desc: "Attend real estate & broker conferences to demo face-to-face" },
+                { title: "Competitor FOMO", desc: "Show brokers what competitors are doing with AI — create urgency" },
+                { title: "Video Testimonials", desc: "Get 2-3 early brokers on camera saying how it helped — social proof wins" },
+            ],
+        };
+
+        // Block order: blocks laid out in reading order (row by row)
+        // Block 0,0 = SG0 | Block 0,1 = SG1 | Block 0,2 = SG2
+        // Block 1,0 = SG7 | Block 1,1 = CENTER | Block 1,2 = SG3
+        // Block 2,0 = SG6 | Block 2,1 = SG5 | Block 2,2 = SG4
+        const blockLayout = [
+            0, 1, 2,
+            7, -1, 3,  // -1 = center block
+            6, 5, 4
+        ];
+
+        // Position map: local cell index (0-8) to action index (clockwise from top-left)
+        // 0 1 2
+        // 3 4 5   (4 = center = sub-goal)
+        // 6 7 8
+        const cellToActionIdx = { 0:0, 1:1, 2:2, 5:3, 8:4, 7:5, 6:6, 3:7 };
+
+        // Center ring: cell index to sub-goal index
+        // Same clockwise: 0=SG0, 1=SG1, 2=SG2, 5=SG3, 8=SG4, 7=SG5, 6=SG6, 3=SG7
+        const centerCellToSG = { 0:0, 1:1, 2:2, 5:3, 8:4, 7:5, 6:6, 3:7 };
+
+        const themeColors = {
+            1: '#7c3aed', 2: '#2563eb', 3: '#0891b2', 4: '#059669',
+            5: '#d97706', 6: '#dc2626', 7: '#db2777', 8: '#ea580c'
+        };
+
+        const outer = document.getElementById('mandalaOuter');
+
+        blockLayout.forEach((sgIdx) => {
+            const block = document.createElement('div');
+            block.classList.add('block');
+
+            if (sgIdx === -1) {
+                // Center block
+                block.classList.add('block-center');
+                for (let i = 0; i < 9; i++) {
+                    const cell = document.createElement('div');
+                    cell.classList.add('cell');
+
+                    if (i === 4) {
+                        // Main goal
+                        cell.classList.add('main-goal');
+                        cell.innerHTML = `<div><div class="goal-label">ONLY</div>3 CR</div>`;
+                        cell.dataset.tooltip = "3 Crore Revenue Target";
+                        cell.dataset.metric = "8 Strategic Revenue Pillars";
+                    } else {
+                        // Center ring
+                        const ringSGIdx = centerCellToSG[i];
+                        const sg = subGoals[ringSGIdx];
+                        cell.classList.add('center-ring', `cr-${sg.theme}`);
+                        cell.textContent = sg.short;
+                        cell.dataset.tooltip = sg.name;
+                        cell.dataset.metric = sg.metric;
+                    }
+
+                    cell.addEventListener('mouseenter', showTooltip);
+                    cell.addEventListener('mousemove', moveTooltip);
+                    cell.addEventListener('mouseleave', hideTooltip);
+                    block.appendChild(cell);
+                }
+            } else {
+                // Outer block
+                const sg = subGoals[sgIdx];
+                block.classList.add(`theme-${sg.theme}`);
+
+                for (let i = 0; i < 9; i++) {
+                    const cell = document.createElement('div');
+                    cell.classList.add('cell');
+
+                    if (i === 4) {
+                        // Sub-goal center
+                        cell.classList.add('sub-goal', `sg-${sg.theme}`);
+                        cell.innerHTML = `<div>
+                            <div class="sub-number">GOAL ${sgIdx + 1}</div>
+                            ${sg.name}
+                            <div class="sub-metric">${sg.metric}</div>
+                        </div>`;
+                        cell.dataset.tooltip = sg.name;
+                        cell.dataset.metric = sg.metric;
+                    } else {
+                        // Action cell
+                        const actIdx = cellToActionIdx[i];
+                        const actions = actionItems[sgIdx];
+                        const item = actions ? actions[actIdx] : null;
+
+                        if (item) {
+                            cell.classList.add('action-cell');
+                            cell.textContent = item.title;
+                            cell.dataset.tooltip = item.title;
+                            cell.dataset.metric = item.desc;
+                        } else {
+                            cell.classList.add('action-cell', 'empty');
+                            cell.textContent = '...';
+                            cell.dataset.tooltip = `Action for ${sg.name}`;
+                            cell.dataset.metric = "Awaiting sub-goals";
+                        }
+                    }
+
+                    cell.addEventListener('mouseenter', showTooltip);
+                    cell.addEventListener('mousemove', moveTooltip);
+                    cell.addEventListener('mouseleave', hideTooltip);
+                    block.appendChild(cell);
+                }
+            }
+
+            outer.appendChild(block);
+        });
+
+        // Legend
+        const legendEl = document.getElementById('legend');
+        subGoals.forEach(sg => {
+            const item = document.createElement('div');
+            item.classList.add('legend-item');
+            item.innerHTML = `<div class="legend-dot" style="background:${themeColors[sg.theme]}"></div>${sg.short}`;
+            legendEl.appendChild(item);
+        });
+
+        // Tooltip
+        const tooltip = document.getElementById('tooltip');
+        const tooltipTitle = document.getElementById('tooltipTitle');
+        const tooltipMetric = document.getElementById('tooltipMetric');
+
+        function showTooltip(e) {
+            if (!e.currentTarget.dataset.tooltip) return;
+            tooltipTitle.textContent = e.currentTarget.dataset.tooltip;
+            tooltipMetric.textContent = e.currentTarget.dataset.metric || '';
+            tooltip.classList.add('visible');
+        }
+        function moveTooltip(e) {
+            tooltip.style.left = Math.min(e.clientX + 16, window.innerWidth - 260) + 'px';
+            tooltip.style.top = Math.min(e.clientY + 16, window.innerHeight - 80) + 'px';
+        }
+        function hideTooltip() { tooltip.classList.remove('visible'); }
+    </script>
+</body>
+</html>
