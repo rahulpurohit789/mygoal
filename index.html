@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mandala Chart - Only 3CR</title>
+    <title>Virendrasingh Rajpurohit - Goal Chart</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
@@ -16,10 +16,10 @@
             min-height: 100vh;
         }
 
-        /* Header */
+        /* ===== HEADER ===== */
         .header {
             text-align: center;
-            padding: 40px 20px 10px;
+            padding: 36px 20px 10px;
         }
         .header-badge {
             display: inline-flex;
@@ -56,10 +56,46 @@
         }
         .header p { color: #9ca3af; font-size: 14px; }
 
-        /* Status Bar */
+        /* ===== TABS ===== */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            margin: 20px auto 0;
+            max-width: 440px;
+            background: #f1f1f5;
+            border-radius: 12px;
+            padding: 4px;
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            background: transparent;
+            color: #6b7280;
+        }
+        .tab-btn.active {
+            background: #fff;
+            color: #7c3aed;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .tab-btn:hover:not(.active) {
+            color: #374151;
+        }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* ===== STATUS BAR ===== */
         .status-bar {
             max-width: 1000px;
-            margin: 16px auto 24px;
+            margin: 20px auto 24px;
             display: flex;
             justify-content: center;
             gap: 40px;
@@ -75,13 +111,12 @@
             font-weight: 800; font-size: 22px; color: #7c3aed;
         }
 
-        /* ===== MANDALA GRID - Proper 3x3 block structure ===== */
+        /* ===== MANDALA GRID ===== */
         .mandala-container {
             max-width: 1000px;
             margin: 0 auto 30px;
             padding: 0 16px;
         }
-
         .mandala-outer {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
@@ -90,8 +125,6 @@
             max-width: 920px;
             margin: 0 auto;
         }
-
-        /* Each 3x3 block */
         .block {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
@@ -103,17 +136,11 @@
             aspect-ratio: 1;
             transition: all 0.3s ease;
         }
-
-        .block:hover {
-            transform: scale(1.01);
-        }
-
-        /* Block themes */
+        .block:hover { transform: scale(1.01); }
         .block.block-center {
             background: linear-gradient(135deg, rgba(124,58,237,0.06), rgba(168,85,247,0.06));
             border-color: rgba(124,58,237,0.2);
         }
-
         .block.theme-1 { background: #f9f7ff; border-color: #e0d9ff; }
         .block.theme-2 { background: #f5f8ff; border-color: #bfdbfe; }
         .block.theme-3 { background: #f2fcff; border-color: #a5f3fc; }
@@ -123,7 +150,6 @@
         .block.theme-7 { background: #fef5fa; border-color: #fbcfe8; }
         .block.theme-8 { background: #fff9f5; border-color: #fed7aa; }
 
-        /* Cells inside blocks */
         .cell {
             display: flex;
             align-items: center;
@@ -138,13 +164,8 @@
             cursor: default;
             position: relative;
         }
+        .cell:hover { transform: scale(1.08); z-index: 20; }
 
-        .cell:hover {
-            transform: scale(1.08);
-            z-index: 20;
-        }
-
-        /* ---- Main Goal (center of center block) ---- */
         .cell.main-goal {
             background: linear-gradient(135deg, #7c3aed, #a855f7, #c084fc);
             color: #fff;
@@ -155,22 +176,15 @@
             border-radius: 10px;
             box-shadow: 0 4px 20px rgba(124, 58, 237, 0.35);
         }
-
         .cell.main-goal .goal-label {
             font-size: 7px; font-weight: 600; opacity: 0.85;
             letter-spacing: 2.5px; text-transform: uppercase; margin-bottom: 1px;
         }
 
-        /* ---- Center ring cells (sub-goal references in center block) ---- */
         .cell.center-ring {
-            font-weight: 700;
-            font-size: 8px;
-            line-height: 1.2;
-            border-radius: 7px;
-            border: 1.5px solid;
+            font-weight: 700; font-size: 8px; line-height: 1.2;
+            border-radius: 7px; border: 1.5px solid;
         }
-
-        /* Theme colors for center ring */
         .cell.cr-1 { background: #f5f3ff; border-color: #d8d0ff; color: #7c3aed; }
         .cell.cr-2 { background: #eff6ff; border-color: #bfdbfe; color: #2563eb; }
         .cell.cr-3 { background: #ecfeff; border-color: #a5f3fc; color: #0891b2; }
@@ -179,21 +193,12 @@
         .cell.cr-6 { background: #fef2f2; border-color: #fecaca; color: #dc2626; }
         .cell.cr-7 { background: #fdf2f8; border-color: #fbcfe8; color: #db2777; }
         .cell.cr-8 { background: #fff7ed; border-color: #fed7aa; color: #ea580c; }
+        .cell.center-ring:hover { box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
 
-        .cell.center-ring:hover {
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        /* ---- Sub Goal (center of outer blocks) ---- */
         .cell.sub-goal {
-            font-weight: 800;
-            font-size: 9px;
-            border-radius: 8px;
-            letter-spacing: -0.2px;
-            line-height: 1.2;
-            border: 2px solid;
+            font-weight: 800; font-size: 9px; border-radius: 8px;
+            letter-spacing: -0.2px; line-height: 1.2; border: 2px solid;
         }
-
         .cell.sub-goal .sub-number {
             font-size: 6px; font-weight: 700; opacity: 0.5;
             letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 1px;
@@ -201,7 +206,6 @@
         .cell.sub-goal .sub-metric {
             font-size: 6.5px; font-weight: 500; opacity: 0.65; margin-top: 2px;
         }
-
         .cell.sg-1 { background: #ede9fe; border-color: #c4b5fd; color: #6d28d9; }
         .cell.sg-2 { background: #dbeafe; border-color: #93c5fd; color: #1d4ed8; }
         .cell.sg-3 { background: #cffafe; border-color: #67e8f9; color: #0e7490; }
@@ -210,84 +214,263 @@
         .cell.sg-6 { background: #fee2e2; border-color: #fca5a5; color: #b91c1c; }
         .cell.sg-7 { background: #fce7f3; border-color: #f9a8d4; color: #be185d; }
         .cell.sg-8 { background: #ffedd5; border-color: #fdba74; color: #c2410c; }
+        .cell.sub-goal:hover { box-shadow: 0 3px 14px rgba(0,0,0,0.12); }
 
-        .cell.sub-goal:hover {
-            box-shadow: 0 3px 14px rgba(0,0,0,0.12);
-        }
-
-        /* ---- Action cells ---- */
         .cell.action-cell {
-            font-size: 8px;
-            font-weight: 500;
-            border-radius: 6px;
+            font-size: 8px; font-weight: 500; border-radius: 6px;
             border: 1px solid rgba(0,0,0,0.06);
-            background: rgba(255,255,255,0.7);
-            color: #4b5563;
+            background: rgba(255,255,255,0.7); color: #4b5563;
         }
-
         .cell.action-cell:hover {
-            background: #fff;
-            border-color: rgba(0,0,0,0.12);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-            color: #111827;
+            background: #fff; border-color: rgba(0,0,0,0.12);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06); color: #111827;
         }
-
         .cell.action-cell.empty {
             background: rgba(255,255,255,0.4);
-            border: 1.5px dashed rgba(0,0,0,0.08);
-            color: #d1d5db;
-            font-size: 7px;
+            border: 1.5px dashed rgba(0,0,0,0.08); color: #d1d5db; font-size: 7px;
         }
+        .cell.action-cell.empty:hover { border-color: rgba(0,0,0,0.15); color: #aaa; }
 
-        .cell.action-cell.empty:hover {
-            border-color: rgba(0,0,0,0.15);
-            color: #aaa;
-        }
-
-        /* Legend */
         .legend {
             max-width: 920px;
             margin: 10px auto 20px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            justify-content: center;
-            padding: 0 20px;
+            display: flex; flex-wrap: wrap; gap: 8px;
+            justify-content: center; padding: 0 20px;
         }
         .legend-item {
             display: flex; align-items: center; gap: 7px;
-            padding: 7px 12px;
-            background: #fff;
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
+            padding: 7px 12px; background: #fff;
+            border: 1px solid #e5e7eb; border-radius: 8px;
             font-size: 11px; font-weight: 500; color: #4b5563;
         }
         .legend-dot { width: 10px; height: 10px; border-radius: 3px; }
 
-        /* Tooltip */
         .tooltip {
-            display: none;
-            position: fixed;
-            background: #fff;
-            border: 1px solid #e5e7eb;
-            border-radius: 12px;
-            padding: 12px 16px;
-            font-size: 13px;
-            color: #111827;
-            z-index: 1000;
-            pointer-events: none;
-            box-shadow: 0 12px 32px rgba(0,0,0,0.12);
-            max-width: 240px;
+            display: none; position: fixed; background: #fff;
+            border: 1px solid #e5e7eb; border-radius: 12px;
+            padding: 12px 16px; font-size: 13px; color: #111827;
+            z-index: 1000; pointer-events: none;
+            box-shadow: 0 12px 32px rgba(0,0,0,0.12); max-width: 240px;
         }
         .tooltip.visible { display: block; }
         .tooltip-title { font-weight: 700; margin-bottom: 3px; }
         .tooltip-metric { font-size: 11px; color: #6b7280; }
 
         .watermark {
+            text-align: center; padding: 10px 0 32px;
+            font-size: 11px; color: #d1d5db;
+        }
+
+        /* ===== ONE PAGER STYLES ===== */
+        .onepager {
+            max-width: 820px;
+            margin: 30px auto 50px;
+            padding: 0 20px;
+        }
+
+        /* Gratitude Section */
+        .gratitude-section {
+            margin-bottom: 40px;
+        }
+
+        .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 14px;
+            border-radius: 100px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .gratitude-section .section-label {
+            background: #fef3c7; color: #b45309; border: 1px solid #fde68a;
+        }
+
+        .gratitude-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .gratitude-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 24px 20px;
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gratitude-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+        }
+
+        .gratitude-card:nth-child(1)::before { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+        .gratitude-card:nth-child(2)::before { background: linear-gradient(90deg, #7c3aed, #a855f7); }
+        .gratitude-card:nth-child(3)::before { background: linear-gradient(90deg, #ef4444, #f87171); }
+
+        .gratitude-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+        }
+
+        .g-name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 4px;
+        }
+
+        .g-role {
+            font-size: 12px;
+            font-weight: 600;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .g-quote {
+            font-size: 15px;
+            font-weight: 700;
+            color: #7c3aed;
+            font-style: italic;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .g-lesson {
+            font-size: 13px;
+            color: #4b5563;
+            line-height: 1.6;
+        }
+
+        /* One Pager Sections */
+        .op-section {
+            margin-bottom: 32px;
+        }
+
+        .op-section .section-label.blue { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+        .op-section .section-label.green { background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; }
+        .op-section .section-label.purple { background: #f5f3ff; color: #6d28d9; border: 1px solid #e0d9ff; }
+        .op-section .section-label.red { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
+
+        .op-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 28px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .op-card h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 16px;
+        }
+
+        .op-card p, .op-card li {
+            font-size: 14px;
+            color: #4b5563;
+            line-height: 1.7;
+        }
+
+        .op-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .op-card ul li {
+            padding: 8px 0;
+            border-bottom: 1px solid #f3f4f6;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .op-card ul li:last-child { border-bottom: none; }
+
+        .op-card ul li::before {
+            content: '';
+            flex-shrink: 0;
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            margin-top: 6px;
+        }
+
+        .op-card.blue-dots ul li::before { background: #3b82f6; }
+        .op-card.green-dots ul li::before { background: #10b981; }
+        .op-card.purple-dots ul li::before { background: #7c3aed; }
+        .op-card.red-dots ul li::before { background: #ef4444; }
+
+        .highlight-text {
+            font-size: 15px;
+            font-weight: 600;
+            color: #111827;
+            line-height: 1.7;
+        }
+
+        .tech-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 12px 0;
+        }
+
+        .tech-badge {
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .tech-badge.ai { background: #ede9fe; color: #6d28d9; }
+        .tech-badge.backend { background: #dbeafe; color: #1d4ed8; }
+        .tech-badge.frontend { background: #d1fae5; color: #047857; }
+        .tech-badge.devops { background: #fef3c7; color: #b45309; }
+        .tech-badge.blockchain { background: #fee2e2; color: #b91c1c; }
+        .tech-badge.lead { background: #fce7f3; color: #be185d; }
+
+        /* Closing statement */
+        .closing {
+            background: linear-gradient(135deg, #7c3aed, #a855f7);
+            border-radius: 20px;
+            padding: 32px;
+            color: #fff;
             text-align: center;
-            padding: 10px 0 32px;
-            font-size: 11px;
-            color: #d1d5db;
+            margin: 40px 0;
+        }
+
+        .closing h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .closing p {
+            font-size: 14px;
+            line-height: 1.7;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .closing .sign {
+            margin-top: 20px;
+            font-weight: 700;
+            font-size: 16px;
+            opacity: 1;
         }
 
         /* Responsive */
@@ -300,6 +483,7 @@
             .cell.sub-goal .sub-number, .cell.sub-goal .sub-metric { display: none; }
             .cell.center-ring { font-size: 6px; }
             .header h1 { font-size: 28px; }
+            .gratitude-cards { grid-template-columns: 1fr; }
         }
 
         @media (max-width: 500px) {
@@ -310,46 +494,201 @@
             .cell.sub-goal { font-size: 5px; }
             .cell.center-ring { font-size: 4.5px; }
             .cell.action-cell { font-size: 4.5px; }
+            .tabs { max-width: 100%; margin: 16px 12px 0; }
         }
     </style>
 </head>
 <body>
 
+    <!-- Header -->
     <div class="header">
-        <div class="header-badge"><span class="dot"></span> MANDALA GOAL CHART</div>
+        <div class="header-badge"><span class="dot"></span> 2025 GOAL SHEET</div>
         <h1>Road to <em style="font-style:normal;background:linear-gradient(135deg,#7c3aed,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Only</em> 3 Crore</h1>
         <p style="color:#374151; font-weight:600; font-size:15px; margin-bottom:4px;">Virendrasingh Rajpurohit</p>
         <p>8 Strategic Pillars &middot; Focused Execution &middot; Clear Metrics</p>
     </div>
 
-    <div class="status-bar">
-        <div class="status-item">
-            <div class="status-label">Target</div>
-            <div class="status-value">3 CR</div>
+    <!-- Tabs -->
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('mandala')">Mandala Chart</button>
+        <button class="tab-btn" onclick="switchTab('onepager')">One Pager</button>
+    </div>
+
+    <!-- ==================== TAB 1: MANDALA CHART ==================== -->
+    <div class="tab-content active" id="tab-mandala">
+
+        <div class="status-bar">
+            <div class="status-item">
+                <div class="status-label">Target</div>
+                <div class="status-value">3 CR</div>
+            </div>
+            <div class="status-item">
+                <div class="status-label">Pillars</div>
+                <div class="status-value">8</div>
+            </div>
+            <div class="status-item">
+                <div class="status-label">Actions</div>
+                <div class="status-value">64</div>
+            </div>
         </div>
-        <div class="status-item">
-            <div class="status-label">Pillars</div>
-            <div class="status-value">8</div>
+
+        <div class="mandala-container">
+            <div class="mandala-outer" id="mandalaOuter"></div>
         </div>
-        <div class="status-item">
-            <div class="status-label">Actions</div>
-            <div class="status-value">64</div>
+
+        <div class="legend" id="legend"></div>
+    </div>
+
+    <!-- ==================== TAB 2: ONE PAGER ==================== -->
+    <div class="tab-content" id="tab-onepager">
+        <div class="onepager">
+
+            <!-- Gratitude -->
+            <div class="gratitude-section">
+                <div class="section-label">GRATITUDE &mdash; THE PEOPLE BEHIND THE GROWTH</div>
+                <div class="gratitude-cards">
+
+                    <div class="gratitude-card">
+                        <div class="g-name">Rishabh Sir</div>
+                        <div class="g-role">The Guardian</div>
+                        <div class="g-quote">"Try toh karo"</div>
+                        <div class="g-lesson">
+                            The one who always stops me from taking the wrong step. Taught me 2 things &mdash; try, whether it's about an idea, a new thing, or even a salary hike. From being an ordinary developer to leading a team.
+                            <br><br>
+                            All thanks to the most supportive manager &mdash; Rishabh Singh.
+                        </div>
+                    </div>
+
+                    <div class="gratitude-card">
+                        <div class="g-name">Harsh Sir</div>
+                        <div class="g-role">The Supporter</div>
+                        <div class="g-quote">"Think Big. Take Risks. Be Fearless."</div>
+                        <div class="g-lesson">
+                            The one who taught me how to think big, how to take risks, how to be fearless. Trusted me and my opinion when it mattered most. The one who always supports me.
+                        </div>
+                    </div>
+
+                    <div class="gratitude-card">
+                        <div class="g-name">Lord Takeshi</div>
+                        <div class="g-role">The Visionary</div>
+                        <div class="g-quote">"An idea is an idea &mdash; even if 100 are nonsense, 1 will change your future."</div>
+                        <div class="g-lesson">
+                            The one who helped me think like crazy. Taught me that every idea deserves a chance &mdash; you just need that one single idea to change everything.
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- What I Learned -->
+            <div class="op-section">
+                <div class="section-label blue">WHAT I'VE LEARNED AT WESEE</div>
+                <div class="op-card blue-dots">
+                    <h3>Mindset Shifts</h3>
+                    <p class="highlight-text" style="margin-bottom: 16px;">How to think big. How to be fearless. How to execute things.</p>
+
+                    <h3>Technical Journey</h3>
+                    <p style="margin-bottom: 14px; color: #4b5563; font-size: 14px; line-height: 1.7;">From an AI intern with zero expertise in anything &mdash; to a jack of all trades, but not just a jack &mdash; <strong>a master of each when it mattered.</strong></p>
+
+                    <div class="tech-badges">
+                        <span class="tech-badge ai">AI</span>
+                        <span class="tech-badge backend">Backend</span>
+                        <span class="tech-badge frontend">Frontend</span>
+                        <span class="tech-badge devops">DevOps</span>
+                        <span class="tech-badge blockchain">Blockchain</span>
+                        <span class="tech-badge lead">Team Lead in 4 Months</span>
+                    </div>
+
+                    <ul style="margin-top: 16px;">
+                        <li><span>When the UI expert was scared of creating a graph &mdash; I created one.</span></li>
+                        <li><span>When the backend expert couldn't create sockets &mdash; I built the perfect one.</span></li>
+                        <li><span>When we didn't have a blockchain developer &mdash; I stepped up and delivered.</span></li>
+                        <li><span>Became Team Lead in just 4 months.</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- What I'll Learn This Year -->
+            <div class="op-section">
+                <div class="section-label green">WHAT I'LL LEARN THIS YEAR</div>
+                <div class="op-card green-dots">
+                    <h3>2025 Learning Goals</h3>
+                    <ul>
+                        <li><span>Master different AI tools &mdash; remove all dependency in coding</span></li>
+                        <li><span>Crack how to develop sites end-to-end with AI assistance</span></li>
+                        <li><span>Learn design systems deeply</span></li>
+                        <li><span>Master debugging at scale</span></li>
+                        <li><span>Free up all my time for crazy ideas and business strategy</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Action Items to Grow Company -->
+            <div class="op-section">
+                <div class="section-label purple">ACTION ITEMS TO GROW MY COMPANY</div>
+                <div class="op-card purple-dots">
+                    <h3>How I'll Move WeSee Forward</h3>
+                    <ul>
+                        <li><span>Move WeSee to a product-based company with recurring monthly income</span></li>
+                        <li><span>Manage all team members &mdash; build a culture of ownership</span></li>
+                        <li><span>Open different departments in the company</span></li>
+                        <li><span>Be whatever the company needs &mdash; from developer to salesman</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- How I'll Track Progress -->
+            <div class="op-section">
+                <div class="section-label red">HOW I'LL TRACK PROGRESS</div>
+                <div class="op-card red-dots">
+                    <h3>Accountability System</h3>
+                    <ul>
+                        <li><span>Track company progress &mdash; revenue, clients, product milestones</span></li>
+                        <li><span>Use this Mandala Chart as the north star for every decision</span></li>
+                        <li><span>Monitor profits &mdash; what's working, what's not, adjust fast</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Closing -->
+            <div class="closing">
+                <h3>This Might Sound Like I'm Faking Around...</h3>
+                <p>
+                    But this is my goal. And I will do it.
+                    <br><br>
+                    Harsh sir might remember my first assignment video &mdash; where I said I have zero knowledge of blockchain, but I can develop anything using AI. "If you want one, hire me."
+                    <br><br>
+                    I guess you're not regretting that decision. And you never will.
+                </p>
+                <div class="sign">&mdash; Virendrasingh Rajpurohit</div>
+            </div>
+
         </div>
     </div>
 
-    <div class="mandala-container">
-        <div class="mandala-outer" id="mandalaOuter"></div>
-    </div>
+    <div class="watermark">Virendrasingh Rajpurohit &middot; 2025 Goal Sheet &middot; Built with Focus</div>
 
-    <div class="legend" id="legend"></div>
-    <div class="watermark">Virendrasingh Rajpurohit &middot; Mandala Goal Chart &middot; Built with Focus</div>
-
+    <!-- Tooltip -->
     <div class="tooltip" id="tooltip">
         <div class="tooltip-title" id="tooltipTitle"></div>
         <div class="tooltip-metric" id="tooltipMetric"></div>
     </div>
 
     <script>
+        // ===== TAB SWITCHING =====
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            if (tab === 'mandala') {
+                document.querySelectorAll('.tab-btn')[0].classList.add('active');
+                document.getElementById('tab-mandala').classList.add('active');
+            } else {
+                document.querySelectorAll('.tab-btn')[1].classList.add('active');
+                document.getElementById('tab-onepager').classList.add('active');
+            }
+        }
+
+        // ===== MANDALA CHART DATA & RENDERING =====
         const subGoals = [
             { name: "Ek Dukan", metric: "1K Shops | 10K Users", theme: 1, short: "Ek Dukan" },
             { name: "Thinkr", metric: "200 Students Only", theme: 2, short: "Thinkr" },
@@ -389,34 +728,6 @@
                 { title: "Daily 1 Question", desc: "One simple prediction per day to build habit (e.g., Will Nifty close green today?)" },
                 { title: "AI Intraday Trading", desc: "AI trades in the stock market — you choose which AI you trust" },
             ],
-            5: [
-                { title: "Own It Mindset", desc: "Work like this is my own company, full ownership mentality" },
-                { title: "Product-Based Co.", desc: "Move WeSee from service-based to product-based company" },
-                { title: "10x ROI Delivery", desc: "If WeSee pays 1 Rs, deliver 10 Rs profit in return" },
-                { title: "Impactful Decisions", desc: "Make bold, impactful decisions that move the needle" },
-                { title: "Lead Tech Team", desc: "Lead and grow the tech team with strong engineering culture" },
-                { title: "Exceed Expectations", desc: "Always give more than what the client expects" },
-                { title: "Loyalty & Trust", desc: "Be Loyal, Be Honest, Win Trust - non-negotiable values" },
-                { title: "Always Available", desc: "9 to 5? Never. Always there when the company needs you" },
-            ],
-            7: [
-                { title: "10M Views/Month on X", desc: "Hit 10 million monthly views on X consistently" },
-                { title: "YT + Insta + 3 X Accs", desc: "Create YouTube channel, Insta channel and 3 small X accounts" },
-                { title: "2 Content People", desc: "Hire 2 full-time content management people" },
-                { title: "Weekly Tech Video", desc: "Create one video a week about new technology" },
-                { title: "Brand Collabs", desc: "Collaborate with brands and big accounts for reach & revenue" },
-                { title: "Affiliate Monetization", desc: "Promote tech products/tools with affiliate commissions on every post" },
-                { title: "Sponsorship Pipeline", desc: "Build a media kit, pitch to 5 brands/month for sponsored content deals" },
-                { title: "Trend Hijacking", desc: "Jump on breaking tech/market news within 30 mins for viral reach" },
-            ],
-            6: [
-                { title: "Save 5L to Invest", desc: "Save 5 lakh dedicated fund to invest in 3 small business ideas" },
-                { title: "Build Connections", desc: "Find people like me who are short of funding and hungry to grow" },
-                { title: "Invest in New Things", desc: "Stay open to investing in new and unconventional business ideas" },
-                { title: "Look in My Network", desc: "Find people in my circle who are responsible and have pressure to prove something" },
-                { title: "Revenue Share Only", desc: "No equity headaches — simple monthly revenue share for passive income" },
-                { title: "Startup Meetups", desc: "Attend local startup meetups to discover investment-worthy small businesses" },
-            ],
             3: [
                 { title: "Market Own Products", desc: "Start marketing Ek Dukan, Thinkr, AI Agent under WeSee Marketing first" },
                 { title: "First Client by July", desc: "Land the first external paying client by July" },
@@ -437,28 +748,39 @@
                 { title: "Competitor FOMO", desc: "Show brokers what competitors are doing with AI — create urgency" },
                 { title: "Video Testimonials", desc: "Get 2-3 early brokers on camera saying how it helped — social proof wins" },
             ],
+            5: [
+                { title: "Own It Mindset", desc: "Work like this is my own company, full ownership mentality" },
+                { title: "Product-Based Co.", desc: "Move WeSee from service-based to product-based company" },
+                { title: "10x ROI Delivery", desc: "If WeSee pays 1 Rs, deliver 10 Rs profit in return" },
+                { title: "Impactful Decisions", desc: "Make bold, impactful decisions that move the needle" },
+                { title: "Lead Tech Team", desc: "Lead and grow the tech team with strong engineering culture" },
+                { title: "Exceed Expectations", desc: "Always give more than what the client expects" },
+                { title: "Loyalty & Trust", desc: "Be Loyal, Be Honest, Win Trust - non-negotiable values" },
+                { title: "Always Available", desc: "9 to 5? Never. Always there when the company needs you" },
+            ],
+            6: [
+                { title: "Save 5L to Invest", desc: "Save 5 lakh dedicated fund to invest in 3 small business ideas" },
+                { title: "Build Connections", desc: "Find people like me who are short of funding and hungry to grow" },
+                { title: "Invest in New Things", desc: "Stay open to investing in new and unconventional business ideas" },
+                { title: "Look in My Network", desc: "Find people in my circle who are responsible and have pressure to prove something" },
+                { title: "Revenue Share Only", desc: "No equity headaches — simple monthly revenue share for passive income" },
+                { title: "Startup Meetups", desc: "Attend local startup meetups to discover investment-worthy small businesses" },
+            ],
+            7: [
+                { title: "10M Views/Month on X", desc: "Hit 10 million monthly views on X consistently" },
+                { title: "YT + Insta + 3 X Accs", desc: "Create YouTube channel, Insta channel and 3 small X accounts" },
+                { title: "2 Content People", desc: "Hire 2 full-time content management people" },
+                { title: "Weekly Tech Video", desc: "Create one video a week about new technology" },
+                { title: "Brand Collabs", desc: "Collaborate with brands and big accounts for reach & revenue" },
+                { title: "Affiliate Monetization", desc: "Promote tech products/tools with affiliate commissions on every post" },
+                { title: "Sponsorship Pipeline", desc: "Build a media kit, pitch to 5 brands/month for sponsored content deals" },
+                { title: "Trend Hijacking", desc: "Jump on breaking tech/market news within 30 mins for viral reach" },
+            ],
         };
 
-        // Block order: blocks laid out in reading order (row by row)
-        // Block 0,0 = SG0 | Block 0,1 = SG1 | Block 0,2 = SG2
-        // Block 1,0 = SG7 | Block 1,1 = CENTER | Block 1,2 = SG3
-        // Block 2,0 = SG6 | Block 2,1 = SG5 | Block 2,2 = SG4
-        const blockLayout = [
-            0, 1, 2,
-            7, -1, 3,  // -1 = center block
-            6, 5, 4
-        ];
-
-        // Position map: local cell index (0-8) to action index (clockwise from top-left)
-        // 0 1 2
-        // 3 4 5   (4 = center = sub-goal)
-        // 6 7 8
+        const blockLayout = [0, 1, 2, 7, -1, 3, 6, 5, 4];
         const cellToActionIdx = { 0:0, 1:1, 2:2, 5:3, 8:4, 7:5, 6:6, 3:7 };
-
-        // Center ring: cell index to sub-goal index
-        // Same clockwise: 0=SG0, 1=SG1, 2=SG2, 5=SG3, 8=SG4, 7=SG5, 6=SG6, 3=SG7
         const centerCellToSG = { 0:0, 1:1, 2:2, 5:3, 8:4, 7:5, 6:6, 3:7 };
-
         const themeColors = {
             1: '#7c3aed', 2: '#2563eb', 3: '#0891b2', 4: '#059669',
             5: '#d97706', 6: '#dc2626', 7: '#db2777', 8: '#ea580c'
@@ -471,20 +793,16 @@
             block.classList.add('block');
 
             if (sgIdx === -1) {
-                // Center block
                 block.classList.add('block-center');
                 for (let i = 0; i < 9; i++) {
                     const cell = document.createElement('div');
                     cell.classList.add('cell');
-
                     if (i === 4) {
-                        // Main goal
                         cell.classList.add('main-goal');
                         cell.innerHTML = `<div><div class="goal-label">ONLY</div>3 CR</div>`;
                         cell.dataset.tooltip = "3 Crore Revenue Target";
                         cell.dataset.metric = "8 Strategic Revenue Pillars";
                     } else {
-                        // Center ring
                         const ringSGIdx = centerCellToSG[i];
                         const sg = subGoals[ringSGIdx];
                         cell.classList.add('center-ring', `cr-${sg.theme}`);
@@ -492,23 +810,18 @@
                         cell.dataset.tooltip = sg.name;
                         cell.dataset.metric = sg.metric;
                     }
-
                     cell.addEventListener('mouseenter', showTooltip);
                     cell.addEventListener('mousemove', moveTooltip);
                     cell.addEventListener('mouseleave', hideTooltip);
                     block.appendChild(cell);
                 }
             } else {
-                // Outer block
                 const sg = subGoals[sgIdx];
                 block.classList.add(`theme-${sg.theme}`);
-
                 for (let i = 0; i < 9; i++) {
                     const cell = document.createElement('div');
                     cell.classList.add('cell');
-
                     if (i === 4) {
-                        // Sub-goal center
                         cell.classList.add('sub-goal', `sg-${sg.theme}`);
                         cell.innerHTML = `<div>
                             <div class="sub-number">GOAL ${sgIdx + 1}</div>
@@ -518,11 +831,9 @@
                         cell.dataset.tooltip = sg.name;
                         cell.dataset.metric = sg.metric;
                     } else {
-                        // Action cell
                         const actIdx = cellToActionIdx[i];
                         const actions = actionItems[sgIdx];
                         const item = actions ? actions[actIdx] : null;
-
                         if (item) {
                             cell.classList.add('action-cell');
                             cell.textContent = item.title;
@@ -535,14 +846,12 @@
                             cell.dataset.metric = "Awaiting sub-goals";
                         }
                     }
-
                     cell.addEventListener('mouseenter', showTooltip);
                     cell.addEventListener('mousemove', moveTooltip);
                     cell.addEventListener('mouseleave', hideTooltip);
                     block.appendChild(cell);
                 }
             }
-
             outer.appendChild(block);
         });
 
